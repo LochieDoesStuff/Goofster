@@ -4,6 +4,7 @@
 typedef struct ClaySettings {
   GColor BackgroundColor;
   GColor NoseColor;
+  bool NoseSeconds;
 } ClaySettings;
 
 static ClaySettings settings;
@@ -11,6 +12,7 @@ static ClaySettings settings;
 static void prv_default_settings() {
   settings.BackgroundColor = GColorMintGreen;
   settings.NoseColor = GColorRed;
+  settings.NoseSeconds = false;
 }
 
 static void prv_save_settings() {
@@ -34,7 +36,12 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   if (nose_color_t) {
     settings.NoseColor = GColorFromHEX(nose_color_t->value->int32);
   }
-  if (bg_color_t || nose_color_t) {
+  Tuple *nose_seconds_t = dict_find(iterator, MESSAGE_KEY_NoseSeconds);
+  if (nose_seconds_t) {
+    settings.NoseSeconds = nose_seconds_t->value->int32 == 1;
+  }
+
+  if (bg_color_t || nose_color_t || nose_seconds_t) {
     prv_save_settings();
     //prv_update_display();
   }
@@ -100,12 +107,13 @@ static void draw_eye(GContext *ctx, GPoint center, int radius, float value, floa
   //graphics_fill_circle(ctx, center, 2);
 }
 
-static void draw_nose(GContext *ctx, GPoint center, int radius) {
+static void draw_nose(GContext *ctx, GPoint center, int radius, float value, float max_value) {
   PBL_IF_COLOR_ELSE(graphics_context_set_fill_color(ctx, settings.NoseColor), graphics_context_set_fill_color(ctx, GColorBlack));
   //graphics_context_set_fill_color(ctx, GColorRed);
   graphics_fill_circle(ctx, center, (radius));
   
-  float angle = TRIG_MAX_ANGLE * 90/100;
+  float angle = TRIG_MAX_ANGLE * value / max_value;
+    //angle = TRIG_MAX_ANGLE * 90/100;
   int x = (int)(sin_lookup(angle) * (radius - (radius / 3) - 2) / TRIG_MAX_RATIO) + center.x;
   int y = (int)(-cos_lookup(angle) * (radius - (radius / 3) - 2) / TRIG_MAX_RATIO) + center.y;
   graphics_context_set_fill_color(ctx, GColorWhite);
@@ -166,8 +174,13 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
   // Minute dial (Right Eye)
   draw_eye(ctx, right_center, bounds.size.w / 4.5, minutes, 60.0);
   
+  //bool noseTest = true;
   // Nose 
-  draw_nose(ctx, nose_center, bounds.size.w / 8);
+  if(settings.NoseSeconds == true) {
+    draw_nose(ctx, nose_center, bounds.size.w / 8, seconds, 60.0);
+  } else {
+    draw_nose(ctx, nose_center, bounds.size.w / 8, 90, 100);
+  }
   
   draw_smile(ctx, bounds.size.w, bounds.size.h);
 }

@@ -25,7 +25,18 @@ module.exports = [
         "messageKey": "NoseColor",
         "defaultValue": "0xFF0000",
         "label": "Nose Color"
-      }
+      },
+      {
+        "type": "heading",
+        "defaultValue": "Settings"
+      },
+      {
+        "type": "toggle",
+        "messageKey": "NoseSeconds",
+        "label": "Enable Nose Seconds",
+        "defaultValue": false
+      },
+
     ]
   },
   {

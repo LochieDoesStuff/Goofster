@@ -13,7 +13,8 @@
         "enableMultiJS": true,
         "messageKeys": [
             "BackgroundColor",
-            "NoseColor"
+            "NoseColor",
+            "NoseSeconds"
         ],
         "projectType": "native",
         "resources": {
