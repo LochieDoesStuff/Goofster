@@ -1,0 +1,46 @@
+{
+    "author": "LochieDoesStuff",
+    "dependencies": {
+        "@rebble/clay": "^1.0.8"
+    },
+    "keywords": [],
+    "name": "goofster",
+    "pebble": {
+        "capabilities": [
+            "configurable"
+        ],
+        "displayName": "Goofster",
+        "enableMultiJS": true,
+        "messageKeys": [
+            "BackgroundColor",
+            "NoseColor"
+        ],
+        "projectType": "native",
+        "resources": {
+            "media": [
+                {
+                    "file": "images/goofster_menu.png",
+                    "menuIcon": true,
+                    "name": "goofster_menu",
+                    "targetPlatforms": null,
+                    "type": "png"
+                }
+            ]
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "aplite",
+            "basalt",
+            "chalk",
+            "diorite",
+            "emery",
+            "gabbro",
+            "flint"
+        ],
+        "uuid": "2a923839-db36-4d2c-b4d9-665acbb0e41d",
+        "watchapp": {
+            "watchface": true
+        }
+    },
+    "version": "1.0.0"
+}
